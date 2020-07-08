@@ -1,38 +1,38 @@
 package users.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import users.model.User;
 
+import javax.jws.soap.SOAPBinding;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class UsersDaoImpl implements UsersDao {
+    private SessionFactory sessionFactory;
 
-    Map<Integer, User> mapUsers = new HashMap<Integer, User>();
-
-    {
-        mapUsers.put(1, new User("Admin", "admin"));
-        mapUsers.put(2, new User("Max", "max"));
-        mapUsers.put(3, new User("Lox", "pidr"));
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-
     public String getLogin(int id) {
-        User user = mapUsers.get(id);
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.get(User.class, id);
         return user.getLogin();
     }
 
     public String getPass(int id) {
-        User user = mapUsers.get(id);
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.get(User.class, id);
         return user.getPassword();
     }
 
     public String getPassAndName(int id) {
-        User user = mapUsers.get(id);
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.get(User.class, id);
         return user.getLogin() + " " + user.getPassword();
     }
-
-
 }
