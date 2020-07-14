@@ -6,8 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import users.model.User;
 import users.service.UsersService;
+
+import java.util.List;
 
 
 @Controller
@@ -21,10 +24,11 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ModelAndView allUsers() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("users");
-        return modelAndView;
+    public String allUsers(Model model) {
+
+        List<User> listUsers = usersService.allUsers();
+        model.addAttribute("listUsers", listUsers);
+        return "/users";
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -46,14 +50,14 @@ public class UsersController {
     public ModelAndView validateUser() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("userServer", new User());
-        modelAndView.setViewName("adduser");
+        modelAndView.setViewName("edituser");
         return modelAndView;
     }
     @GetMapping("/delete")
-    public String deleteUser(@RequestParam("id") int id) {
+    public RedirectView deleteUser(@RequestParam("id") int id) {
         User user = usersService.getById(id);
         usersService.remove(user);
-        return "edituser";
+        return new RedirectView("/controller/add");
     }
 
 }

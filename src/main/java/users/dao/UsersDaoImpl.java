@@ -65,6 +65,6 @@ public class UsersDaoImpl implements UsersDao {
 
     public List<User> allUsers() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from users").list();
+        return session.createQuery("from User", User.class).getResultList();
     }
 }
