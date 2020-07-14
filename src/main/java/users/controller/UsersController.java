@@ -24,8 +24,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String allUsers(Model model) {
-
+    public String allUsers(@ModelAttribute("userServer") User user, Model model) {
         List<User> listUsers = usersService.allUsers();
         model.addAttribute("listUsers", listUsers);
         return "/users";
@@ -42,9 +41,9 @@ public class UsersController {
         return "/user";
     }
     @RequestMapping(value = "/useradd", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("userServer") User user) {
+    public RedirectView addUser(@ModelAttribute("userServer") User user) {
         usersService.add(user);
-        return "edituser";
+        return new RedirectView("/controller/users");
     }
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView validateUser() {
@@ -57,7 +56,7 @@ public class UsersController {
     public RedirectView deleteUser(@RequestParam("id") int id) {
         User user = usersService.getById(id);
         usersService.remove(user);
-        return new RedirectView("/controller/add");
+        return new RedirectView("/controller/users");
     }
 
 }
