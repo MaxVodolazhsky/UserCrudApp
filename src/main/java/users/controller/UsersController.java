@@ -58,5 +58,19 @@ public class UsersController {
         usersService.remove(user);
         return new RedirectView("/controller/users");
     }
+    @PostMapping("/update-login")
+    public RedirectView updateLogin(@RequestParam("login") String login, @RequestParam("id") int id) {
+        User user = usersService.getById(id);
+        user.setLogin(login);
+        usersService.setLogin(user);
+        return new RedirectView("/controller/users");
+    }
+    @PostMapping("/update-pass")
+    public RedirectView updatePass(@RequestParam("password") String password, @RequestParam("id") int id) {
+        User user = usersService.getById(id);
+        user.setPassword(password);
+        usersService.setPass(user);
+        return new RedirectView("/controller/users");
+    }
 
 }
